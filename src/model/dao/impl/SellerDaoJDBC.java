@@ -30,11 +30,11 @@ public class SellerDaoJDBC implements SellerDao {
 		try {
 			st = conn.prepareStatement(
 					"INSERT INTO seller " 
-					+ "(Name, Email, BirthDate, BaseSalary, DepartmentId)"
+					+ "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
 					+ "VALUES " 
 					+ "(?, ?, ?, ?, ?)", 
-					Statement.RETURN_GENERATED_KEYS); // RETORNA O ID DO NOVO VENDEDOR
-																						// INSERIDO
+					Statement.RETURN_GENERATED_KEYS); // RETORNA O ID DO NOVO VENDEDOR INSERIDO
+																						
 			st.setString(1, obj.getName());
 			st.setString(2, obj.getEmail());
 			st.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
@@ -45,7 +45,7 @@ public class SellerDaoJDBC implements SellerDao {
 
 			if (rowsAffected > 0) { // SE POSITIVO SIGNIFICA QUE FOI INSERIDO
 				ResultSet rs = st.getGeneratedKeys();
-				if (rs.next()) {
+				if (rs.next()) { 
 					int id = rs.getInt(1);
 					obj.setId(id);
 				} else {
@@ -89,7 +89,7 @@ public class SellerDaoJDBC implements SellerDao {
 	public void deleteById(Integer id) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement("DELETE FROM seller WHERE Id = ?");
+			st = conn.prepareStatement("DELETE FROM seller WHERE Id = ? ");
 			st.setInt(1, id);
 			
 			int rows = st.executeUpdate();
@@ -178,8 +178,7 @@ public class SellerDaoJDBC implements SellerDao {
 
 				if (dep == null) {
 					dep = instantiateDepartment(rs);
-					map.put(rs.getInt("DepartmentId"), dep); // SALVANDO O DEPARTAMENTO NO MAP PARA QUE NÃO HAJA
-																// REPETIÇÕES
+					map.put(rs.getInt("DepartmentId"), dep); // SALVANDO O DEPARTAMENTO NO MAP PARA QUE NÃO HAJA REPETIÇÕES																// REPETIÇÕES
 				}
 
 				Seller obj = instantiateSeller(rs, dep);
